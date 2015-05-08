@@ -1,7 +1,7 @@
 # usertool
 SoftLayer child user add, delete, list tool for the Hack session
 
-#ハンズオンのユーザー作成ツール
+#SOFTLAYERハンズオンのユーザー作成ツール
 
 　
 ##python コード
