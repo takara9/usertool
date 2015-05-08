@@ -29,6 +29,17 @@ SoftLayer child user add, delete, list tool for the Hack session
     README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
 
 
+### Ubuntu 14.04 x86_64 の場合
+
+    apt-get update
+    apt-get upgrade -y
+    apt-get install python-pip
+    pip install softlayer
+    apt-get install git
+    git clone https://github.com/takara9/usertool.git
+    [root@tkr02 usertool]# ls
+    README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+
 ##使い方
 
 それぞれのファイルのヘッダー部分に、利用法を記載してあります。次の使い方は、x1_add_user.pyのヘッダー部分に記載したものです。

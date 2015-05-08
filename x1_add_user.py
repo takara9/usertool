@@ -147,7 +147,7 @@ def passwd_gen():
 # APIログイン
 #
 def api_login():
-    client = SoftLayer.Client(username, api_key )
+    client = SoftLayer.Client(username=username, api_key=api_key )
     try:
         object_mask = 'id,username,firstName,lastName'
         ret = client['Account'].getCurrentUser(mask=object_mask)
