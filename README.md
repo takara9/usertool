@@ -25,7 +25,8 @@ SoftLayer child user add, delete, list tool for the Hack session
     yum install -y python-pip
     pip install softlayer
     git clone https://github.com/takara9/usertool.git
-
+    [root@tkr02 usertool]# ls
+    README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
 
 
 ##使い方
@@ -46,18 +47,23 @@ SoftLayer child user add, delete, list tool for the Hack session
 ##使用例
 
 ###(a) ユーザー追加
+
 このコマンドは、子ユーザーを作成して、パーミションの設定、アクセス制御の設定を実行します。以下のusernameとpasswordをコピペして、セッションの参加者に配布します。
+
     $./x1_add_user.py
     How many the child user id do you want to add ? 3
     Current User = hack91800
     username = hack71187  password = ddnSeF$7
     username = hack71188  password = dgUygm#2
     username = hack71189  password = hropnH!8
+
 このコマンドを実行するユーザーは、プライマリ・アカウントである必要はありません。子ユーザーで、さらに子、プライマリ・アカウントからは孫になるユーザーを作ることができます。
 
 
 ###(b) ユーザーのリスト表示
+
 子ユーザーをリストします。子ユーザーを作る前に、このコマンドで既存の子ユーザーを確認できます。
+
     $ ./x2_list_user.py
     Current User = hack91800
     Username               id        firstName                 lastName
@@ -68,6 +74,7 @@ SoftLayer child user add, delete, list tool for the Hack session
 
 ###(c) ユーザーの削除
 自ユーザーの子ユーザーを一括削除します。
+
     $ ./x3_del_user.py
     Current User = hack91800
     Username               id        userStatusId
