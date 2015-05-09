@@ -18,27 +18,91 @@ SoftLayer child user add, delete, list tool for the Hack session
 
 ##インストール方法
 
+SoftLayerの仮想サーバーにインストールして利用と、手元のパソコンにインストールして利用のどちらでも、対応できます。
+
+
 ### CentOS6 x86_64 の場合
 
+CentOS6では、InsecurePlatformWarningのワーニングが表示されるので、pip install requests==2.5.3 を実行してバージョンを下げることで対応します。
+
     yum update -y
+    python --version
+    Python 2.6.6
     rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    yum install -y git
     yum install -y python-pip
     pip install softlayer
+    pip install requests==2.5.3
     git clone https://github.com/takara9/usertool.git
-    [root@tkr02 usertool]# ls
+    cd usertool
+    ls
     README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+
+この後、それぞれのファイルのusername,api-keyを変更して実行します。
+CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm に置き換えます。
 
 
 ### Ubuntu 14.04 x86_64 の場合
 
     apt-get update
     apt-get upgrade -y
-    apt-get install python-pip
+    python --version
+    Python 2.7.6
+    apt-get install python-pip -y
     pip install softlayer
-    apt-get install git
+    apt-get install git -y
     git clone https://github.com/takara9/usertool.git
-    [root@tkr02 usertool]# ls
+    ls
     README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+
+この後、それぞれのファイルのusername,api-keyを変更して実行します。
+
+
+### MacOS 10.9 の場合
+
+最初からPythonが入っているので、pipのインストールから始めます。
+
+    sudo -s
+    easy_install pip
+    pip install softlayer
+    pip install requests==2.5.3
+    exit
+    git clone https://github.com/takara9/usertool.git
+    ls
+    README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+
+この後は同じです。 Ubuntuの場合と同じです。
+
+
+### Windows 8.1 / Windows 7 の場合
+
+最初にPythonとsetuptoolsをインストールします。 Pythonのインストールは、https://www.python.org/downloads/windows/から2.7系の最新版をダウンロードして導入します。 環境変数のPathにC:\Python27;C:\Python27\Scriptsを加えます。
+
+次にWindows PowerShellを起動してsetuptoolsを次のコマンドを実行します。詳しい解説は、https://pypi.python.org/pypi/setuptoolsのページにあります。
+
+    (Invoke-WebRequest https://bootstrap.pypa.io/ez_setup.py).Content | python -
+    exit
+
+次に、pipなど必要なソフトウェアを導入していきます。
+
+    easy_install pip
+    pip install softlayer
+    pip install requests==2.5.3
+
+Windowsのgitは、https://msysgit.github.io/からダウンロードしてインストールします。環境変数のPathにgitの導入先のC:\Program Files (x86)\Git\binを追加します。コマンド プロンプトを起動してクローンを作成します。
+
+    git clone https://github.com/takara9/usertool.git
+    ls
+    README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+
+この後は他のOSと同じです。
+
+
+
+### usernameとapi-keyの取得方法
+
+SOFTLAYERのポータル画面で、Account -> Users へ進み、実行したいユーザー名の行で、API Keyの列で、GenerateをクリックするとViewに変わる。　このViewをクリックして、表示されたAPI Keyをコピペして利用する。
+
 
 ##使い方
 
