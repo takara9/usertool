@@ -39,7 +39,7 @@ CentOS6では、InsecurePlatformWarningのワーニングが表示されるの�
     README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
 
 この後、それぞれのファイルのusername,api-keyを変更して実行します。
-CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm に置き換えます。
+CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm  に置き換えます。
 
 
 ### Ubuntu 14.04 x86_64 の場合
@@ -76,9 +76,9 @@ CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x8
 
 ### Windows 8.1 / Windows 7 の場合
 
-最初にPythonとsetuptoolsをインストールします。 Pythonのインストールは、https://www.python.org/downloads/windows/から2.7系の最新版をダウンロードして導入します。 環境変数のPathにC:\Python27;C:\Python27\Scriptsを加えます。
+最初にPythonとsetuptoolsをインストールします。 Pythonのインストールは、https://www.python.org/downloads/windows/  から2.7系の最新版をダウンロードして導入します。 環境変数のPathにC:\Python27;C:\Python27\Scriptsを加えます。
 
-次にWindows PowerShellを起動してsetuptoolsを次のコマンドを実行します。詳しい解説は、https://pypi.python.org/pypi/setuptoolsのページにあります。
+次にWindows PowerShellを起動してsetuptoolsを次のコマンドを実行します。詳しい解説は、https://pypi.python.org/pypi/setuptools  のページにあります。
 
     (Invoke-WebRequest https://bootstrap.pypa.io/ez_setup.py).Content | python -
     exit
@@ -89,7 +89,7 @@ CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x8
     pip install softlayer
     pip install requests==2.5.3
 
-Windowsのgitは、https://msysgit.github.io/からダウンロードしてインストールします。環境変数のPathにgitの導入先のC:\Program Files (x86)\Git\binを追加します。コマンド プロンプトを起動してクローンを作成します。
+Windowsのgitは、https://msysgit.github.io/  からダウンロードしてインストールします。環境変数のPathにgitの導入先のC:\Program Files (x86)\Git\binを追加します。コマンド プロンプトを起動してクローンを作成します。
 
     git clone https://github.com/takara9/usertool.git
     ls
