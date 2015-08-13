@@ -17,35 +17,11 @@
 #  作成者  Maho Takara   takara@jp.ibm.com
 #  2015/5/8   
 
-
 import SoftLayer
 import random
 import string
-
-#
-#  プライマリーアカウントの
-#    ユーザーIDとパスワード  (1)
-#
-
-username='hack91800'
-api_key='52083f49009962983409b0309e89a95edf0deb052b2ab566289ab2a5915712c4'
-
-
-#
-# APIログイン
-#
-def api_login():
-    client = SoftLayer.Client(username=username, api_key=api_key )
-    try:
-        object_mask = 'id,username,firstName,lastName'
-        ret = client['Account'].getCurrentUser(mask=object_mask)
-        print "Current User = %s " % ret['username']
-    except SoftLayer.SoftLayerAPIError as e:
-        print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
-        return False
-
-    return client
-
+import requests
+import user_account as ua
 
 #
 #
@@ -53,8 +29,8 @@ def api_login():
 #
 #
 if __name__ == '__main__':
-
-    clt = api_login()
+    requests.packages.urllib3.disable_warnings()
+    clt = ua.api_login()
     if clt == False:
         print "Failed: api_login()"
         exit(1)

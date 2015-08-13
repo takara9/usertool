@@ -30,19 +30,13 @@
 #  作成者  Maho Takara   takara@jp.ibm.com
 #  2015/5/8   
 #
-
-
 import SoftLayer
 import random
 import string
 import os
-
-#
-#  プライマリーアカウントの
-#    ユーザーIDとパスワード (1)
-#
-username='hack91800'
-api_key='52083f49009962983409b0309e89a95edf0deb052b2ab566289ab2a5915712c4'
+import requests
+import json
+import user_account as ua
 
 #
 # ユーザーに与える権限のリスト(3)
@@ -101,7 +95,7 @@ param = [
 #'CDN_ACCOUNT_MANAGE',
 #'SECURITY_CERTIFICATE_MANAGE',
 #'CDN_FILE_MANAGE',
-#'CUSTOMER_SSH_KEY_MANAGEMENT',
+'CUSTOMER_SSH_KEY_MANAGEMENT',
 #'VIEW_CPANEL',
 #'SERVICE_UPGRADE',
 #'VIEW_PLESK',
@@ -130,7 +124,6 @@ param = [
 ]
 ###################
 
-
 #
 # パスワード生成
 #
@@ -142,21 +135,6 @@ def passwd_gen():
     s += random.choice(string.digits)
     return s
 
-
-#
-# APIログイン
-#
-def api_login():
-    client = SoftLayer.Client(username=username, api_key=api_key )
-    try:
-        object_mask = 'id,username,firstName,lastName'
-        ret = client['Account'].getCurrentUser(mask=object_mask)
-        print "Current User = %s " % ret['username']
-    except SoftLayer.SoftLayerAPIError as e:
-        print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
-        return False
-
-    return client
 
 #
 # アカウント作成
@@ -174,7 +152,7 @@ def add_user(client, username, password):
         'city': 'Tokyo',
         'country': 'JP',
         'postalCode': '000-0000',
-        'email': 'hogehoge@xx.xxx',
+        'email': 'takara@jp.ibm.com',
         'userStatusId': 1001,
         'timezoneId': 158,
     }
@@ -264,13 +242,14 @@ def userid_gen(n):
 # メイン
 #
 if __name__ == '__main__':
+    requests.packages.urllib3.disable_warnings()
 
-    num_of_user = input("How many the child user id do you want to add ? ")
-
-    clt = api_login()
+    clt = ua.api_login()
     if clt == False:
         print "Failed: api_login()"
         exit(1)
+
+    num_of_user = input("How many the child user id do you want to add ? ")
 
 
     # 新規ユーザーのリスト作成
