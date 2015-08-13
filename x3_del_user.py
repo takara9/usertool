@@ -14,14 +14,14 @@
 #  注意点
 #    自ユーザーの子ユーザーを一度に消します。消してはいけないユーザーを区別しません。
 #
-#  作成者  Maho Takara   takara@jp.ibm.com
-#  2015/5/8   
+#  2015/5/8  初版リリース
+#  2015/8/13 ユーザーIDとAPI-KEYを初回実行時だけ入力する様に改良
+#
 
 import SoftLayer
 import random
 import string
 import requests
-import user_account
 import user_account as ua
 
 #

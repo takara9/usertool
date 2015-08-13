@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# APIキーの入ったファイルが存在すれば読み込み、
-# 存在しなければ新規作成する
+# APIを実行するアカウントIDとAPI-KEYを管理する共通ライブラリ
+# 
 #  
 #  作成者  Maho Takara   takara@jp.ibm.com
 #  2015/8/13
@@ -11,14 +11,17 @@ import SoftLayer
 import string
 import os
 import json
+
 #
 #  プライマリーアカウントの
 #    ユーザーIDとパスワード (1)
 #
 account = {"username": None, "api_key": None}
 account_file = 'account.json'
+
 #
-# 
+# APIキーの入ったファイルが存在すれば読み込み、
+# 存在しなければ新規作成する
 #
 def apikey():
 
@@ -36,6 +39,7 @@ def apikey():
             with open(account_file, 'r') as f:
                 account = json.load(f)
                 
+
 #
 # APIログイン
 #
