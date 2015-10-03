@@ -156,6 +156,7 @@ def add_user(client, username, password):
         'email': 'takara@jp.ibm.com',
         'userStatusId': 1001,
         'timezoneId': 158,
+        'secondaryPasswordTimeoutDays': 30,
     }
     try:
         account = client['SoftLayer_User_Customer'].createObject(userObj,password)
