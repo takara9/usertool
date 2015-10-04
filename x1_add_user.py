@@ -30,7 +30,12 @@
 #  作成者  Maho Takara   takara@jp.ibm.com
 #  2015/5/8  初版リリース
 #  2015/8/13 ユーザーIDとAPI-KEYを初回実行時だけ入力する様に改良
+#  2015/10/3 パスワード有効期限の設定、コーディングミス修正
 #
+#  既知のバグ
+#    sslVpnAllowedFlag をTrueに出来ない、登録後にポータルから変更する必要がある。
+#
+
 import SoftLayer
 import random
 import string
@@ -147,7 +152,7 @@ def add_user(client, username, password):
     userObj={
         'username': username,
         'firstName': 'Hands on user', 
-        'lastName': 'expire in 3 days',
+        'lastName': username,
         'companyName': 'ANY',
         'address1': 'ANY',
         'city': 'Tokyo',
@@ -156,10 +161,12 @@ def add_user(client, username, password):
         'email': 'takara@jp.ibm.com',
         'userStatusId': 1001,
         'timezoneId': 158,
-        'secondaryPasswordTimeoutDays': 30,
+        'secondaryPasswordTimeoutDays': 3,
     }
     try:
         account = client['SoftLayer_User_Customer'].createObject(userObj,password)
+        print "account id : %s" % account['id']
+
         return True
     except SoftLayer.SoftLayerAPIError as e:
         print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
@@ -186,7 +193,6 @@ def set_permission(client, xid):
         try:
             ret = client['SoftLayer_User_Customer'].addPortalPermission({'keyName': kn},id=xid)
             #print 'Permission: %s done' % kn
-
         except SoftLayer.SoftLayerAPIError as e:
             print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
 
@@ -196,11 +202,26 @@ def set_permission(client, xid):
 #  既存のサーバーのアクセス権を外す
 def remove_permission_existing_servers(client, xid):
     try:
-        ret = clt['SoftLayer_User_Customer'].removeAllHardwareAccessForThisUser(id=xid)
-        ret = clt['SoftLayer_User_Customer'].removeAllVirtualAccessForThisUser(id=xid)
+        ret = client['SoftLayer_User_Customer'].removeAllHardwareAccessForThisUser(id=xid)
+        ret = client['SoftLayer_User_Customer'].removeAllVirtualAccessForThisUser(id=xid)
     except SoftLayer.SoftLayerAPIError as e:
         print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
 
+
+#
+# ユーザーにVPNのアクセス件を付与する
+#  
+def set_vpn_access_permission(client, xid, password):
+    vpnObj = {
+        'sslVpnAllowedFlag': True,
+        'pptpVpnAllowedFlag': False,
+        'vpnManualConfig' : False
+    }
+    try:
+        ret = client['SoftLayer_User_Customer'].updateVpnPassword(password,id=xid)
+        ret = client['SoftLayer_User_Customer'].updateVpnUser(vpnObj,id=xid)
+    except SoftLayer.SoftLayerAPIError as e:
+        print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
 
 #
 # ユーザーIDの開始番号の管理
@@ -270,12 +291,13 @@ if __name__ == '__main__':
         ret = add_user(clt, susername, password)
         if ret == False:
             print "Failed: add_user()"
-            exit(1)
+            # exit(1)
 
         # パーミッション設定、既存サーバーのアクセス権削除
         id = get_id_from_username(clt, susername)
         set_permission(clt, id)    
         remove_permission_existing_servers(clt, id)
+        set_vpn_access_permission(clt, id, password)
 
 
 

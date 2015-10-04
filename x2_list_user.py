@@ -41,19 +41,20 @@ if __name__ == '__main__':
     # 子ユーザーのリスト
     #
     try:
-        object_mask = 'id,username,firstName,lastName'
+        object_mask = 'id,username,firstName,lastName,sslVpnAllowedFlag,userStatusId'
         ret = clt['Account'].getCurrentUser(mask=object_mask)
-        ret = clt['SoftLayer_User_Customer'].getChildUsers(mask=object_mask,id=ret['id'])
+        users = clt['SoftLayer_User_Customer'].getChildUsers(mask=object_mask,id=ret['id'])
+
     except SoftLayer.SoftLayerAPIError as e:
         print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
         exit(1)
 
-    print "%-16s       %-6s    %-15s           %-15s" % ("Username", "id", "firstName", "lastName")
+    print "%-16s       %-6s    %-15s           %-15s  %-10s  %-7s" % ("Username", "id", "firstName", "lastName","SSL_VPN","Status")
 
-    for x in ret:
-        ret2 = clt['SoftLayer_User_Customer'].isMasterUser(id=x['id'])
-        if ret2 != True:
-            print "%-16s       %-6d    %-15s           %-15s" % (x['username'],x['id'],x['firstName'],x['lastName'])
+    for user in users:
+        ret = clt['SoftLayer_User_Customer'].isMasterUser(id=user['id'])
+        if ret != True:
+           print "%-16s       %-6d    %-15s           %-15s  %-10s  %-7s" % (user['username'],user['id'],user['firstName'],user['lastName'],user['sslVpnAllowedFlag'],user['userStatusId'])
 
 
 #exit(0)

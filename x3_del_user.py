@@ -16,6 +16,7 @@
 #
 #  2015/5/8  初版リリース
 #  2015/8/13 ユーザーIDとAPI-KEYを初回実行時だけ入力する様に改良
+#  2015/10/4 "VPN Only" のユーザーは消去しない様に変更
 #
 
 import SoftLayer
@@ -41,24 +42,22 @@ if __name__ == '__main__':
     try:
         object_mask = 'id,username,firstName,lastName,userStatusId'
         ret = clt['Account'].getCurrentUser(mask=object_mask)
-        ret = clt['SoftLayer_User_Customer'].getChildUsers(mask=object_mask,id=ret['id'])
+        users = clt['SoftLayer_User_Customer'].getChildUsers(mask=object_mask,id=ret['id'])
     except SoftLayer.SoftLayerAPIError as e:
         print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
         exit(1)
 
     print "%-16s       %-6s    %-5s" % ("Username", "id", "userStatusId")
-    for x in ret:
-        ret2 = clt['SoftLayer_User_Customer'].isMasterUser(id=x['id'])
-        if ret2 != True:
-            print "%-16s       %-6d    %-5d" % (x['username'],x['id'],x['userStatusId'])
-
-            #user={'userStatusId': 1003} # INACTIVE
-            user={'userStatusId': 1021} # CANCEL_PENDING
-            try:
-                account = clt['SoftLayer_User_Customer'].editObject(user,id=x['id'])
-            except SoftLayer.SoftLayerAPIError as e:
-                print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
-                exit(1)
+    for user in users:
+        ret = clt['SoftLayer_User_Customer'].isMasterUser(id=user['id'])
+        if ret != True:
+            if user['userStatusId'] != 1022:
+                print "%-16s       %-6d    %-5d" % (user['username'],user['id'],user['userStatusId'])
+                newStatus = {'userStatusId': 1021} # CANCEL_PENDING
+                try:
+                    account = clt['SoftLayer_User_Customer'].editObject(newStatus,id=user['id'])
+                except SoftLayer.SoftLayerAPIError as e:
+                    print("faultCode=%s, faultString=%s" % (e.faultCode, e.faultString))
 
 
 
